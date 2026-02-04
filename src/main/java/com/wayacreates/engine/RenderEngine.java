@@ -110,11 +110,15 @@ public class RenderEngine {
     public void renderCharacter(RenderSession session, String characterType, String animation) {
         LOGGER.info("🎭 Rendering character: {} with animation: {}", characterType, animation);
         
-        // Apply Fresh Animations model
-        freshAnimationsManager.applyCharacterModel(characterType);
+        // Apply Fresh Animations model if manager exists
+        if (freshAnimationsManager != null) {
+            freshAnimationsManager.applyCharacterModel(characterType);
+        }
         
-        // Apply character rig
-        characterRigManager.applyRig(characterType);
+        // Apply character rig if manager exists
+        if (characterRigManager != null) {
+            characterRigManager.applyRig(characterType);
+        }
         
         // Apply face rig if available
         if (DEBUG_MODE) {
@@ -214,14 +218,20 @@ public class RenderEngine {
         // Update active sessions
         activeSessions.values().forEach(RenderSession::tick);
         
-        // Update Fresh Animations
-        freshAnimationsManager.tick();
+        // Update Fresh Animations if manager exists
+        if (freshAnimationsManager != null) {
+            freshAnimationsManager.tick();
+        }
         
-        // Update character rigs
-        characterRigManager.tick();
+        // Update character rigs if manager exists
+        if (characterRigManager != null) {
+            characterRigManager.tick();
+        }
         
-        // Update face rigs
-        faceRigManager.tick();
+        // Update face rigs if manager exists
+        if (faceRigManager != null) {
+            faceRigManager.tick();
+        }
         
         // Update resource monitoring
         updateResourceMonitoring();
@@ -230,21 +240,29 @@ public class RenderEngine {
     public void onWorldLoad(ServerWorld world) {
         LOGGER.info("🌍 Render Engine ready for world: {}", world.getRegistryKey().getValue());
         
-        // Initialize Fresh Animations for new world
-        freshAnimationsManager.onWorldLoad(world);
+        // Initialize Fresh Animations for new world if manager exists
+        if (freshAnimationsManager != null) {
+            freshAnimationsManager.onWorldLoad(world);
+        }
         
-        // Load world-specific character rigs
-        characterRigManager.onWorldLoad(world);
+        // Load world-specific character rigs if manager exists
+        if (characterRigManager != null) {
+            characterRigManager.onWorldLoad(world);
+        }
     }
     
     public void onWorldUnload(ServerWorld world) {
         LOGGER.info("🌍 Render Engine unloaded for world: {}", world.getRegistryKey().getValue());
         
-        // Cleanup Fresh Animations
-        freshAnimationsManager.onWorldUnload(world);
+        // Cleanup Fresh Animations if manager exists
+        if (freshAnimationsManager != null) {
+            freshAnimationsManager.onWorldUnload(world);
+        }
         
-        // Cleanup character rigs
-        characterRigManager.onWorldUnload(world);
+        // Cleanup character rigs if manager exists
+        if (characterRigManager != null) {
+            characterRigManager.onWorldUnload(world);
+        }
     }
     
     // Render Settings Class
