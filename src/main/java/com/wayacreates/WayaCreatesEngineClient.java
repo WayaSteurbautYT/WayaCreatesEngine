@@ -10,11 +10,11 @@ import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
-import com.wayacreates.ui.VideoEditorUI;
+// import com.wayacreates.ui.VideoEditorUI; // Temporarily disabled
 import com.wayacreates.ui.ThreeDViewport;
 import com.wayacreates.ui.NodeCompositorUI;
 import com.wayacreates.ui.AudioEditorUI;
-import com.wayacreates.ui.OverlayUI;
+// import com.wayacreates.ui.OverlayUI; // Temporarily disabled
 
 /**
  * WayaCreates Engine Client Entry Point
@@ -115,18 +115,18 @@ public class WayaCreatesEngineClient implements ClientModInitializer {
     }
     
     private void handleKeyBindings(MinecraftClient client) {
-        // Open main editor
+        // Open main editor - temporarily disabled
         if (openEditorKey.wasPressed()) {
-            client.setScreen(new VideoEditorUI());
-            WayaCreatesEngine.LOGGER.info("🎬 Video editor opened via key binding");
+            // client.setScreen(new VideoEditorUI()); // Temporarily disabled
+            client.player.sendMessage(Text.literal("🎬 Video editor temporarily disabled"), true);
+            WayaCreatesEngine.LOGGER.info("🎬 Video editor opened via key binding (temporarily disabled)");
         }
         
-        // Toggle overlay
+        // Toggle overlay - temporarily disabled
         if (toggleOverlayKey.wasPressed()) {
-            OverlayUI overlay = WayaCreatesEngine.getOverlayUI();
-            // TODO: Toggle overlay visibility
-            client.player.sendMessage(Text.literal("🖼️ Overlay toggled"), true);
-            WayaCreatesEngine.LOGGER.info("🖼️ Overlay toggled via key binding");
+            // OverlayUI overlay = WayaCreatesEngine.getOverlayUI(); // Temporarily disabled
+            client.player.sendMessage(Text.literal("🖼️ Overlay toggled (temporarily disabled)"), true);
+            WayaCreatesEngine.LOGGER.info("🖼️ Overlay toggled via key binding (temporarily disabled)");
         }
         
         // Start/stop recording
@@ -166,10 +166,8 @@ public class WayaCreatesEngineClient implements ClientModInitializer {
     }
     
     private void renderOverlay(net.minecraft.client.gui.DrawContext drawContext, float tickDelta) {
-        OverlayUI overlay = WayaCreatesEngine.getOverlayUI();
-        if (overlay != null) {
-            // TODO: Render overlay elements
-            // This would render things like recording status, resource usage, etc.
-        }
+        // OverlayUI overlay = WayaCreatesEngine.getOverlayUI(); // Temporarily disabled
+        // TODO: Render overlay elements when re-enabled
+        // This would render things like recording status, resource usage, etc.
     }
 }

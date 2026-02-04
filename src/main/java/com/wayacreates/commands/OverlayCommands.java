@@ -21,14 +21,9 @@ public class OverlayCommands {
             return 0;
         }
         
-        // Implementation: Show overlay system GUI
-        var overlay = WayaCreatesEngine.getOverlayUI();
-        if (overlay != null) {
-            source.sendFeedback(() -> Text.literal("§a🖼️ Overlay shown"), true);
-        } else {
-            source.sendFeedback(() -> Text.literal("§c❌ Overlay system not available"), false);
-            return 0;
-        }
+        // Implementation: Show overlay system GUI - temporarily disabled
+        // var overlay = WayaCreatesEngine.getOverlayUI(); // Temporarily disabled
+        source.sendFeedback(() -> Text.literal("§c🖼️ Overlay system temporarily disabled"), false);
         
         return 1;
     }
@@ -42,14 +37,9 @@ public class OverlayCommands {
             return 0;
         }
         
-        // Implementation: Hide overlay
-        var overlay = WayaCreatesEngine.getOverlayUI();
-        if (overlay != null) {
-            source.sendFeedback(() -> Text.literal("§a🖼️ Overlay hidden"), true);
-        } else {
-            source.sendFeedback(() -> Text.literal("§c❌ Overlay system not available"), false);
-            return 0;
-        }
+        // Implementation: Hide overlay - temporarily disabled
+        // var overlay = WayaCreatesEngine.getOverlayUI(); // Temporarily disabled
+        source.sendFeedback(() -> Text.literal("§c🖼️ Overlay system temporarily disabled"), false);
         
         return 1;
     }
@@ -63,14 +53,9 @@ public class OverlayCommands {
             return 0;
         }
         
-        // Implementation: Toggle overlay
-        var overlay = WayaCreatesEngine.getOverlayUI();
-        if (overlay != null) {
-            source.sendFeedback(() -> Text.literal("§a🖼️ Overlay toggled"), true);
-        } else {
-            source.sendFeedback(() -> Text.literal("§c❌ Overlay system not available"), false);
-            return 0;
-        }
+        // Implementation: Toggle overlay - temporarily disabled
+        // var overlay = WayaCreatesEngine.getOverlayUI(); // Temporarily disabled
+        source.sendFeedback(() -> Text.literal("§c🖼️ Overlay system temporarily disabled"), false);
         
         return 1;
     }

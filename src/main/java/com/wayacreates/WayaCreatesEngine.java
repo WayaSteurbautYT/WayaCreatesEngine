@@ -15,11 +15,11 @@ import com.wayacreates.engine.AnimationEngine;
 import com.wayacreates.engine.AudioEngine;
 import com.wayacreates.engine.TutorialSystem;
 import com.wayacreates.engine.PluginManager;
-import com.wayacreates.ui.VideoEditorUI;
+// import com.wayacreates.ui.VideoEditorUI; // Temporarily disabled
 import com.wayacreates.ui.ThreeDViewport;
 import com.wayacreates.ui.NodeCompositorUI;
 import com.wayacreates.ui.AudioEditorUI;
-import com.wayacreates.ui.OverlayUI;
+// import com.wayacreates.ui.OverlayUI; // Temporarily disabled
 import com.wayacreates.commands.WayaCreatesCommands;
 import com.wayacreates.config.WayaCreatesConfig;
 import com.wayacreates.recording.RecordingManager;
@@ -58,11 +58,11 @@ public class WayaCreatesEngine implements ModInitializer {
     private static PluginManager pluginManager;
     
     // UI Components
-    private static VideoEditorUI videoEditorUI;
+    // private static VideoEditorUI videoEditorUI; // Temporarily disabled
     private static ThreeDViewport threeDViewport;
     private static NodeCompositorUI nodeCompositorUI;
     private static AudioEditorUI audioEditorUI;
-    private static OverlayUI overlayUI;
+    // private static OverlayUI overlayUI; // Temporarily disabled
     
     // Managers
     private static RecordingManager recordingManager;
@@ -126,6 +126,7 @@ public class WayaCreatesEngine implements ModInitializer {
         
         videoEngine = new VideoEngine();
         renderEngine = new RenderEngine();
+        renderEngine.initialize();
         animationEngine = new AnimationEngine();
         audioEngine = new AudioEngine();
         
@@ -144,11 +145,11 @@ public class WayaCreatesEngine implements ModInitializer {
             LOGGER.info("🖥️ Initializing UI components...");
         }
         
-        videoEditorUI = new VideoEditorUI();
+        // videoEditorUI = new VideoEditorUI(); // Temporarily disabled
         threeDViewport = new ThreeDViewport();
         nodeCompositorUI = new NodeCompositorUI();
         audioEditorUI = new AudioEditorUI();
-        overlayUI = new OverlayUI();
+        // overlayUI = new OverlayUI(); // Temporarily disabled
         
         LOGGER.info("✅ UI components initialized");
     }
@@ -221,11 +222,11 @@ public class WayaCreatesEngine implements ModInitializer {
         if (modIntegrationManager != null) modIntegrationManager.tick();
         
         // Update UI
-        if (videoEditorUI != null) videoEditorUI.tick();
+        // if (videoEditorUI != null) videoEditorUI.tick(); // Temporarily disabled
         if (threeDViewport != null) threeDViewport.tick();
         if (nodeCompositorUI != null) nodeCompositorUI.tick();
         if (audioEditorUI != null) audioEditorUI.tick();
-        if (overlayUI != null) overlayUI.tick();
+        // if (overlayUI != null) overlayUI.tick(); // Temporarily disabled
         
         // Update tutorial system
         if (tutorialSystem != null) tutorialSystem.tick();
@@ -259,11 +260,11 @@ public class WayaCreatesEngine implements ModInitializer {
     public static TutorialSystem getTutorialSystem() { return tutorialSystem; }
     public static PluginManager getPluginManager() { return pluginManager; }
     
-    public static VideoEditorUI getVideoEditorUI() { return videoEditorUI; }
+    // public static VideoEditorUI getVideoEditorUI() { return videoEditorUI; } // Temporarily disabled
     public static ThreeDViewport getThreeDViewport() { return threeDViewport; }
     public static NodeCompositorUI getNodeCompositorUI() { return nodeCompositorUI; }
     public static AudioEditorUI getAudioEditorUI() { return audioEditorUI; }
-    public static OverlayUI getOverlayUI() { return overlayUI; }
+    // public static OverlayUI getOverlayUI() { return overlayUI; } // Temporarily disabled
     
     public static RecordingManager getRecordingManager() { return recordingManager; }
     public static LivestreamManager getLivestreamManager() { return livestreamManager; }

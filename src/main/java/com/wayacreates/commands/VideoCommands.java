@@ -22,14 +22,9 @@ public class VideoCommands {
             return 0;
         }
         
-        // Implementation: Open video editor GUI
-        var videoEditor = WayaCreatesEngine.getVideoEditorUI();
-        if (videoEditor != null) {
-            source.sendFeedback(() -> Text.translatable("wayacreates.video.editor_opened"), true);
-        } else {
-            source.sendFeedback(() -> Text.translatable("wayacreates.video.not_available"), false);
-            return 0;
-        }
+        // Implementation: Open video editor GUI - temporarily disabled
+        // var videoEditor = WayaCreatesEngine.getVideoEditorUI(); // Temporarily disabled
+        source.sendFeedback(() -> Text.literal("§c🎬 Video editor temporarily disabled"), false);
         
         return 1;
     }

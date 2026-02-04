@@ -20,6 +20,18 @@ repositories {
             includeGroup "maven.modrinth"
         }
     }
+    
+    // CurseMaven for LDLib
+    maven {
+        name = "CurseMaven"
+        url = "https://www.cursemaven.com"
+    }
+    
+    // JitPack for alternative libraries
+    maven {
+        name = "JitPack"
+        url = "https://jitpack.io"
+    }
 }
 
 version = project.mod_version
@@ -40,27 +52,29 @@ dependencies {
 
     // Mod Menu
     modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+    
+    // LDLib for advanced UI components via CurseMaven
+    modImplementation "curse.maven:ldlib-${project.ldlib_project_id}:${project.ldlib_file_id}"
 
-    // Sodium for performance
-    // modImplementation "maven.modrinth:sodium:${project.sodium_version}"
+    // Performance and Graphics Enhancements
+    modImplementation "maven.modrinth:sodium:mc1.20.1-0.5.3"
+    
+    // Iris for shaders (compatible with Sodium)
+    modImplementation "maven.modrinth:iris:1.6.4+1.20"
+    
+    // Entity Model and Texture Features (version issues - need research)
+    // modImplementation "maven.modrinth:entitytexturefeatures:4.5.2"
+    // modImplementation "maven.modrinth:entity-model-features:1.0.3"
+    // modImplementation "maven.modrinth:entityculling:1.6.2"
 
-    // Iris for shaders
-    // modImplementation "maven.modrinth:iris:${project.iris_version}"
+    // Video processing libraries (enabled for compatibility)
+    implementation 'org.bytedeco:javacv:1.5.9'
+    implementation 'org.bytedeco:ffmpeg-platform:6.0-1.5.9'
+    // implementation 'org.bytedeco:opencv-platform:4.8.0-1.5.9' // Version conflicts
 
-    // Fresh Animations support
-    // modImplementation "maven.modrinth:fresh-animations:${project.fresh_animations_version}"
-
-    // Entity Texture Features
-    // modImplementation "maven.modrinth:entity-texture-features:${project.entity_texture_features_version}"
-
-    // Video processing libraries (commented out for basic build)
-    // implementation 'org.bytedeco:javacv:1.5.9'
-    // implementation 'org.bytedeco:ffmpeg-platform:6.0-1.5.9'
-    // implementation 'org.bytedeco:opencv-platform:4.8.0-1.5.9'
-
-    // Audio processing (commented out for basic build)
-    // implementation 'org.jcodec:jcodec:0.2.5'
-    // implementation 'org.jcodec:jcodec-javase:0.2.5'
+    // Audio processing
+    implementation 'org.jcodec:jcodec:0.2.5'
+    implementation 'org.jcodec:jcodec-javase:0.2.5'
 
     // JSON processing
     implementation 'com.google.code.gson:gson:2.10.1'
