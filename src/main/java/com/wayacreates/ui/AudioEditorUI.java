@@ -387,14 +387,24 @@ public class AudioEditorUI extends Screen {
     public void tick() {
         if (isPlaying) {
             currentTime += 1.0f / 30.0f; // 30 FPS
-            audioMixer.update(currentTime);
+            if (audioMixer != null) {
+                audioMixer.update(currentTime);
+            }
         }
         
-        // Update components
-        waveformDisplay.tick();
-        effectsPanel.tick();
-        timeline.tick();
-        liveStreamPanel.tick();
+        // Update components with null checks
+        if (waveformDisplay != null) {
+            waveformDisplay.tick();
+        }
+        if (effectsPanel != null) {
+            effectsPanel.tick();
+        }
+        if (timeline != null) {
+            timeline.tick();
+        }
+        if (liveStreamPanel != null) {
+            liveStreamPanel.tick();
+        }
     }
     
     // Utility methods

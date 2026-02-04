@@ -380,13 +380,21 @@ public class NodeCompositorUI extends Screen {
     }
     
     public void tick() {
-        // Update node graph
-        nodeGraph.tick();
+        // Update node graph with null check
+        if (nodeGraph != null) {
+            nodeGraph.tick();
+        }
         
-        // Update components
-        nodeEditor.tick();
-        propertyPanel.tick();
-        previewPanel.tick();
+        // Update components with null checks
+        if (nodeEditor != null) {
+            nodeEditor.tick();
+        }
+        if (propertyPanel != null) {
+            propertyPanel.tick();
+        }
+        if (previewPanel != null) {
+            previewPanel.tick();
+        }
     }
     
     // Utility methods

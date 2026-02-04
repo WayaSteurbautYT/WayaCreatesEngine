@@ -66,10 +66,20 @@ public class RenderEngine {
         freshAnimationsManager.initialize();
         
         // Load character rigs from template
-        characterRigManager.loadRigTemplate("c:/Users/steur/Documents/Rig-Template");
+        try {
+            characterRigManager.loadRigTemplate("c:/Users/steur/Documents/Rig-Template");
+        } catch (Exception e) {
+            LOGGER.warn("⚠️ Could not load character rig template: {}", e.getMessage());
+            LOGGER.info("📝 Character rig template not found - using default rigs");
+        }
         
         // Load face rig expressions
-        faceRigManager.loadFaceExpressions("c:/Users/steur/Documents/Rig-Template/Lipsync");
+        try {
+            faceRigManager.loadFaceExpressions("c:/Users/steur/Documents/Rig-Template/Lipsync");
+        } catch (Exception e) {
+            LOGGER.warn("⚠️ Could not load face rig expressions: {}", e.getMessage());
+            LOGGER.info("📝 Face rig expressions not found - using default expressions");
+        }
         
         isInitialized = true;
         LOGGER.info("✅ Render Engine fully initialized");

@@ -125,9 +125,11 @@ public class WayaCreatesEngine implements ModInitializer {
         }
         
         videoEngine = new VideoEngine();
+        videoEngine.initialize();
         renderEngine = new RenderEngine();
         renderEngine.initialize();
         animationEngine = new AnimationEngine();
+        animationEngine.initialize();
         audioEngine = new AudioEngine();
         audioEngine.initialize();
         

@@ -375,14 +375,24 @@ public class ThreeDViewport extends Screen {
     public void tick() {
         if (isPlaying) {
             currentTime += 1.0f / 30.0f; // 30 FPS animation
-            scene.updateAnimation(currentTime);
+            if (scene != null) {
+                scene.updateAnimation(currentTime);
+            }
         }
         
-        // Update components
-        viewportControls.tick();
-        objectProperties.tick();
-        timeline.tick();
-        animationControls.tick();
+        // Update components with null checks
+        if (viewportControls != null) {
+            viewportControls.tick();
+        }
+        if (objectProperties != null) {
+            objectProperties.tick();
+        }
+        if (timeline != null) {
+            timeline.tick();
+        }
+        if (animationControls != null) {
+            animationControls.tick();
+        }
     }
     
     // Utility methods

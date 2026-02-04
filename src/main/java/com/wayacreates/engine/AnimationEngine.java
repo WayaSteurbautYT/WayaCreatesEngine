@@ -57,10 +57,20 @@ public class AnimationEngine {
             LOGGER.debug("- Loading bone structure");
             LOGGER.debug("- Initializing animation controllers");
         }
-        characterRigSystem.loadRigTemplate("c:/Users/steur/Documents/Rig-Template");
+        try {
+            characterRigSystem.loadRigTemplate("c:/Users/steur/Documents/Rig-Template");
+        } catch (Exception e) {
+            LOGGER.warn("⚠️ Could not load character rig template: {}", e.getMessage());
+            LOGGER.info("📝 Character rig template not found - using default rigs");
+        }
         
         // Load face rig expressions
-        faceRigSystem.loadFaceExpressions("c:/Users/steur/Documents/Rig-Template/Lipsync");
+        try {
+            faceRigSystem.loadFaceExpressions("c:/Users/steur/Documents/Rig-Template/Lipsync");
+        } catch (Exception e) {
+            LOGGER.warn("⚠️ Could not load face rig expressions: {}", e.getMessage());
+            LOGGER.info("📝 Face rig expressions not found - using default expressions");
+        }
         
         isInitialized = true;
         LOGGER.info("✅ Animation Engine fully initialized");
