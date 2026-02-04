@@ -4,13 +4,6 @@
   "package": "com.wayacreates.mixin.client",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "MinecraftClientMixin",
-    "GameRendererMixin",
-    "WorldRendererMixin",
-    "SoundManagerMixin",
-    "ScreenMixin",
-    "KeyboardMixin",
-    "MouseMixin"
   ],
   "injectors": {
     "defaultRequire": 1

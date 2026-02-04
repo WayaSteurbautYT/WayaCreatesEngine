@@ -6,11 +6,6 @@
   "mixins": [
   ],
   "client": [
-    "client.MinecraftClientMixin",
-    "client.GameRendererMixin",
-    "client.WorldRendererMixin",
-    "client.SoundManagerMixin",
-    "client.ScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
