@@ -21,7 +21,7 @@
 			"com.wayacreates.WayaCreatesEngine"
 		],
 		"client": [
-			"com.wayacreates.WayaCreatesEngineClient"
+			"com.wayacreates.client.WayaCreatesEngineClient"
 		],
 		"modmenu": [
 			"com.wayacreates.config.ModMenuIntegration"

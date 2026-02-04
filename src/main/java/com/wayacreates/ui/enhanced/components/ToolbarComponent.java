@@ -1,10 +1,11 @@
 package com.wayacreates.ui.enhanced.components;
 
 import com.wayacreates.ui.UIComponent;
+import com.wayacreates.shader.ShaderManager;
+import com.wayacreates.entity.EntityModelManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,13 @@ public class ToolbarComponent extends UIComponent {
         viewGroup.addButton(new ToolbarButton("🎯", "Fit to Screen", "Ctrl+0", this::fitToScreen));
         viewGroup.addButton(new ToolbarButton("👁", "Toggle Preview", "Space", this::togglePreview));
         
+        // Effects and Shaders group
+        ButtonGroup effectsGroup = new ButtonGroup("Effects");
+        effectsGroup.addButton(new ToolbarButton("🎨", "Shaders", "F1", this::toggleShaders));
+        effectsGroup.addButton(new ToolbarButton("🔄", "Reload Shaders", "F2", this::reloadShaders));
+        effectsGroup.addButton(new ToolbarButton("👾", "Entity Models", "F3", this::toggleEntityModels));
+        effectsGroup.addButton(new ToolbarButton("✨", "Entity Textures", "F4", this::reloadEntityFeatures));
+        
         // Playback controls
         ButtonGroup playbackGroup = new ButtonGroup("Playback");
         playbackGroup.addButton(new ToolbarButton("⏮", "Previous", "Left", this::previousFrame));
@@ -65,6 +73,7 @@ public class ToolbarComponent extends UIComponent {
         buttonGroups.add(fileGroup);
         buttonGroups.add(editGroup);
         buttonGroups.add(viewGroup);
+        buttonGroups.add(effectsGroup);
         buttonGroups.add(playbackGroup);
         
         // Add all buttons to main list
@@ -275,6 +284,23 @@ public class ToolbarComponent extends UIComponent {
     
     private void nextFrame() {
         MinecraftClient.getInstance().player.sendMessage(Text.literal("⏭ Next frame"), true);
+    }
+    
+    // Shader and Entity Feature action methods
+    private void toggleShaders() {
+        ShaderManager.toggleShaderSupport();
+    }
+    
+    private void reloadShaders() {
+        ShaderManager.reloadShaders();
+    }
+    
+    private void toggleEntityModels() {
+        EntityModelManager.toggleEntityCulling();
+    }
+    
+    private void reloadEntityFeatures() {
+        EntityModelManager.reloadEntityFeatures();
     }
     
     // Inner classes

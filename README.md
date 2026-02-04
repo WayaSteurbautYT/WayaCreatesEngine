@@ -1,6 +1,23 @@
 # WayaCreates Engine - Professional Minecraft Animation & Video Editing System
 
-🎬 **WayaCreates Engine v2.0.0** - The ultimate professional Minecraft animation and video editing system designed for creators, featuring industry-standard tools and workflows.
+🎬 **WayaCreates Engine v2.1.0** - The ultimate professional Minecraft animation and video editing system designed for creators, featuring industry-standard tools and workflows.
+
+## 🚀 What's New in v2.1.0
+
+### ✨ **Major Updates**
+- **Enhanced Shader Support** - Full Iris integration with real-time shader switching
+- **Entity Model Features** - Complete integration with Entity Texture Features and Entity Model Features
+- **Fresh Animations Compatibility** - Seamless support for Fresh Animations resource pack
+- **Advanced Debug Commands** - Comprehensive debugging system for developers
+- **Improved UI Components** - Enhanced user interface with better performance
+- **Server-Side Compatibility** - Fixed server compatibility issues and improved stability
+
+### 🔧 **Technical Improvements**
+- Fixed dependency version conflicts
+- Enhanced error handling and null checks
+- Improved resource management
+- Better client-server synchronization
+- Optimized performance for large projects
 
 ## 🌟 Key Features
 

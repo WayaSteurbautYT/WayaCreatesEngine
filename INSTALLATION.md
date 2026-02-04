@@ -39,7 +39,7 @@ Download these mods from Modrinth or CurseForge:
 - **Continuity** (Connected textures for better visuals)
 
 ### 3. Install WayaCreates Engine
-1. Download the latest `wayacreates-engine-2.0.0.jar` from [GitHub Releases](https://github.com/WayaSteurbautYT/WayaCreatesEngine/releases)
+1. Download the latest `wayacreates-engine-2.1.0.jar` from [GitHub Releases](https://github.com/WayaSteurbautYT/WayaCreatesEngine/releases)
 2. Place the JAR file in your `.minecraft/mods` folder
 3. Launch Minecraft with your Fabric profile
 
@@ -94,6 +94,18 @@ For better performance, adjust these settings:
 - **F1**: Toggle WayaCreates Engine
 - **Tab**: Switch between editor tabs
 - **ESC**: Close current dialog
+
+### Debug Commands (New in v2.1.0)
+Use these commands for debugging and testing:
+
+```bash
+/wce debug                    # Show system status and debug info
+/wce reload                   # Reload all UI components
+/wce ui                       # Test UI components
+/wce shaders                  # Test shader functionality
+/wce entities                 # Test entity model features
+/wce status                   # Check mod status
+```
 
 ### Basic Workflow
 1. **Create Project**: Use `/wayacreates project new <name>`

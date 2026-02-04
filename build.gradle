@@ -62,10 +62,10 @@ dependencies {
     // Iris for shaders (compatible with Sodium)
     modImplementation "maven.modrinth:iris:1.6.4+1.20"
     
-    // Entity Model and Texture Features (version issues - need research)
-    // modImplementation "maven.modrinth:entitytexturefeatures:4.5.2"
-    // modImplementation "maven.modrinth:entity-model-features:1.0.3"
-    // modImplementation "maven.modrinth:entityculling:1.6.2"
+    // Entity Model and Texture Features (compatible with Fresh Animations)
+    modImplementation "maven.modrinth:entitytexturefeatures:6.2.7"
+    modImplementation "maven.modrinth:entity-model-features:3.0.1"
+    modImplementation "maven.modrinth:entityculling:1.6.2-1.20"
 
     // Video processing libraries (enabled for compatibility)
     implementation 'org.bytedeco:javacv:1.5.9'

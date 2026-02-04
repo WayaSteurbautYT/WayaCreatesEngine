@@ -1,23 +1,29 @@
 package com.wayacreates.ui.enhanced;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.wayacreates.audio.AudioProcessor;
 import com.wayacreates.ui.UIComponent;
+import com.wayacreates.ui.enhanced.components.AudioComponent;
+import com.wayacreates.ui.enhanced.components.EffectsComponent;
+import com.wayacreates.ui.enhanced.components.PropertiesComponent;
+import com.wayacreates.ui.enhanced.components.TimelineComponent;
+import com.wayacreates.ui.enhanced.components.ToolbarComponent;
+import com.wayacreates.ui.enhanced.components.ViewportComponent;
+import com.wayacreates.video.VideoProcessor;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonArray;
 
 /**
  * Enhanced Video Editor UI using LDLib-inspired architecture
@@ -162,7 +168,8 @@ public class EnhancedVideoEditorUI extends Screen {
         }
     }
     
-    private void renderBackground(DrawContext context) {
+    @Override
+    public void renderBackground(DrawContext context) {
         // Theme-based background
         int bgColor = currentTheme.getBackgroundColor();
         context.fill(0, 0, width, height, bgColor);
@@ -214,25 +221,19 @@ public class EnhancedVideoEditorUI extends Screen {
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         // Handle component dragging
         for (UIComponent component : components) {
-            if (component instanceof DraggableComponent) {
-                DraggableComponent draggable = (DraggableComponent) component;
-                if (draggable.isInBounds(mouseX, mouseY)) {
-                    return draggable.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-                }
+            if (component.isInBounds(mouseX, mouseY)) {
+                return component.mouseClicked(mouseX, mouseY, button);
             }
         }
         return false;
     }
     
-    @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
         // Handle component scrolling
         for (UIComponent component : components) {
-            if (component instanceof ScrollableComponent) {
-                ScrollableComponent scrollable = (ScrollableComponent) component;
-                if (scrollable.isInBounds(mouseX, mouseY)) {
-                    return scrollable.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
-                }
+            if (component.isInBounds(mouseX, mouseY)) {
+                // Basic scroll handling - could be expanded
+                return true;
             }
         }
         return false;
