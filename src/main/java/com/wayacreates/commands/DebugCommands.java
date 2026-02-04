@@ -5,140 +5,179 @@ import com.wayacreates.shader.ShaderManager;
 import com.wayacreates.entity.EntityModelManager;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
-import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
+import static net.minecraft.server.command.CommandManager.literal;
 
 /**
- * Debug commands for testing UI components and mod functionality
- * Provides client-side commands for debugging and testing
+ * Debug commands for testing mod functionality
+ * Provides server-side commands for debugging and testing
  */
 public class DebugCommands {
     
-    public static void registerCommands(CommandDispatcher<FabricClientCommandSource> dispatcher) {
+    public static void registerCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
         // Main debug command
         dispatcher.register(literal("wce")
             .then(literal("debug")
                 .executes(DebugCommands::showDebugInfo))
             .then(literal("reload")
                 .executes(DebugCommands::reloadAll))
-            .then(literal("ui")
-                .executes(DebugCommands::testUI))
+            .then(literal("status")
+                .executes(DebugCommands::showStatus))
             .then(literal("shaders")
                 .executes(DebugCommands::testShaders))
             .then(literal("entities")
-                .executes(DebugCommands::testEntities))
-            .then(literal("status")
-                .executes(DebugCommands::showStatus)));
+                .executes(DebugCommands::testEntities)));
     }
     
-    private static int showDebugInfo(CommandContext<FabricClientCommandSource> context) {
-        MinecraftClient client = MinecraftClient.getInstance();
+    private static int showDebugInfo(CommandContext<ServerCommandSource> context) {
+        context.getSource().sendFeedback(() -> Text.literal("=== WayaCreates Engine Debug Info ==="), false);
+        context.getSource().sendFeedback(() -> Text.literal("Version: 2.1.0"), false);
+        context.getSource().sendFeedback(() -> Text.literal("Environment: Server"), false);
         
-        context.getSource().sendFeedback(Text.literal("=== WayaCreates Engine Debug Info ==="));
-        context.getSource().sendFeedback(Text.literal("Version: 2.0.0"));
-        context.getSource().sendFeedback(Text.literal("Environment: " + 
-            (client.getServer() != null ? "Integrated Server" : "Client Only")));
-        
-        // Shader info
-        context.getSource().sendFeedback(Text.literal("Shader Support: " + 
-            (ShaderManager.isShaderSupportEnabled() ? "✅" : "❌")));
-        context.getSource().sendFeedback(Text.literal("Iris Present: " + 
-            (ShaderManager.isIrisPresent() ? "✅" : "❌")));
-        context.getSource().sendFeedback(Text.literal("Sodium Present: " + 
-            (ShaderManager.isSodiumPresent() ? "✅" : "❌")));
-        
-        // Entity info
-        context.getSource().sendFeedback(Text.literal("EMF Present: " + 
-            (EntityModelManager.isEMFPresent() ? "✅" : "❌")));
-        context.getSource().sendFeedback(Text.literal("ETF Present: " + 
-            (EntityModelManager.isETFPresent() ? "✅" : "❌")));
-        context.getSource().sendFeedback(Text.literal("Fresh Animations: " + 
-            (EntityModelManager.isFreshAnimationsCompatible() ? "✅" : "❌")));
+        // Engine status
+        context.getSource().sendFeedback(() -> Text.literal("Video Engine: " + 
+            (WayaCreatesEngine.getVideoEngine() != null ? "✅" : "❌")), false);
+        context.getSource().sendFeedback(() -> Text.literal("Render Engine: " + 
+            (WayaCreatesEngine.getRenderEngine() != null ? "✅" : "❌")), false);
+        context.getSource().sendFeedback(() -> Text.literal("Animation Engine: " + 
+            (WayaCreatesEngine.getAnimationEngine() != null ? "✅" : "❌")), false);
+        context.getSource().sendFeedback(() -> Text.literal("Audio Engine: " + 
+            (WayaCreatesEngine.getAudioEngine() != null ? "✅" : "❌")), false);
         
         return 1;
     }
     
-    private static int reloadAll(CommandContext<FabricClientCommandSource> context) {
-        context.getSource().sendFeedback(Text.literal("🔄 Reloading all mod components..."));
+    private static int reloadAll(CommandContext<ServerCommandSource> context) {
+        context.getSource().sendFeedback(() -> Text.literal("Reloading WayaCreates Engine components..."), false);
         
-        // Reload shaders
-        ShaderManager.reloadShaders();
-        
-        // Reload entity features
-        EntityModelManager.reloadEntityFeatures();
-        
-        context.getSource().sendFeedback(Text.literal("✅ Reload complete!"));
-        return 1;
-    }
-    
-    private static int testUI(CommandContext<FabricClientCommandSource> context) {
-        context.getSource().sendFeedback(Text.literal("🎨 Testing UI components..."));
-        
-        // Test basic UI functionality
         try {
-            context.getSource().sendFeedback(Text.literal("• Toolbar Component: ✅"));
-            context.getSource().sendFeedback(Text.literal("• Enhanced UI Component: ✅"));
-            context.getSource().sendFeedback(Text.literal("• Status Panels: ✅"));
-            context.getSource().sendFeedback(Text.literal("• Quick Actions: ✅"));
+            // Reload engines if they exist
+            if (WayaCreatesEngine.getVideoEngine() != null) {
+                WayaCreatesEngine.getVideoEngine().initialize();
+                context.getSource().sendFeedback(() -> Text.literal("✅ Video Engine reloaded"), false);
+            }
+            
+            if (WayaCreatesEngine.getRenderEngine() != null) {
+                WayaCreatesEngine.getRenderEngine().initialize();
+                context.getSource().sendFeedback(() -> Text.literal("✅ Render Engine reloaded"), false);
+            }
+            
+            if (WayaCreatesEngine.getAnimationEngine() != null) {
+                WayaCreatesEngine.getAnimationEngine().initialize();
+                context.getSource().sendFeedback(() -> Text.literal("✅ Animation Engine reloaded"), false);
+            }
+            
+            if (WayaCreatesEngine.getAudioEngine() != null) {
+                WayaCreatesEngine.getAudioEngine().initialize();
+                context.getSource().sendFeedback(() -> Text.literal("✅ Audio Engine reloaded"), false);
+            }
+            
+            context.getSource().sendFeedback(() -> Text.literal("🔄 All components reloaded successfully"), false);
         } catch (Exception e) {
-            context.getSource().sendError(Text.literal("❌ UI Test failed: " + e.getMessage()));
-            WayaCreatesEngine.LOGGER.error("UI test failed", e);
+            context.getSource().sendError(Text.literal("❌ Error during reload: " + e.getMessage()));
         }
         
         return 1;
     }
     
-    private static int testShaders(CommandContext<FabricClientCommandSource> context) {
-        context.getSource().sendFeedback(Text.literal("🎨 Testing shader functionality..."));
+    private static int showStatus(CommandContext<ServerCommandSource> context) {
+        context.getSource().sendFeedback(() -> Text.literal("=== WayaCreates Engine Status ==="), false);
         
-        String currentShader = ShaderManager.getCurrentShaderPack();
-        context.getSource().sendFeedback(Text.literal("Current Shader: " + currentShader));
+        // Check mod dependencies
+        final boolean sodiumPresent;
+        final boolean irisPresent;
+        final boolean etfPresent;
+        final boolean emfPresent;
         
-        if (ShaderManager.isShaderSupportEnabled()) {
-            context.getSource().sendFeedback(Text.literal("✅ Shader support is active"));
+        boolean sodiumFound = false;
+        boolean irisFound = false;
+        boolean etfFound = false;
+        boolean emfFound = false;
+        
+        try {
+            Class.forName("net.caffeinemc.sodium.SodiumMod");
+            sodiumFound = true;
+        } catch (ClassNotFoundException e) {
+            // Sodium not present
+        }
+        sodiumPresent = sodiumFound;
+        
+        try {
+            Class.forName("net.irisshaders.iris.Iris");
+            irisFound = true;
+        } catch (ClassNotFoundException e) {
+            // Iris not present
+        }
+        irisPresent = irisFound;
+        
+        try {
+            Class.forName("traben.entity_texture_features.EntityTextureFeatures");
+            etfFound = true;
+        } catch (ClassNotFoundException e) {
+            // ETF not present
+        }
+        etfPresent = etfFound;
+        
+        try {
+            Class.forName("traben.entity_model_features.EntityModelFeatures");
+            emfFound = true;
+        } catch (ClassNotFoundException e) {
+            // EMF not present
+        }
+        emfPresent = emfFound;
+        
+        context.getSource().sendFeedback(() -> Text.literal("Sodium: " + (sodiumPresent ? "✅" : "❌")), false);
+        context.getSource().sendFeedback(() -> Text.literal("Iris: " + (irisPresent ? "✅" : "❌")), false);
+        context.getSource().sendFeedback(() -> Text.literal("Entity Texture Features: " + (etfPresent ? "✅" : "❌")), false);
+        context.getSource().sendFeedback(() -> Text.literal("Entity Model Features: " + (emfPresent ? "✅" : "❌")), false);
+        
+        return 1;
+    }
+    
+    private static int testShaders(CommandContext<ServerCommandSource> context) {
+        context.getSource().sendFeedback(() -> Text.literal("Testing shader functionality..."), false);
+        
+        try {
+            boolean shaderSupport = ShaderManager.isShaderSupportEnabled();
+            boolean irisPresent = ShaderManager.isIrisPresent();
+            boolean sodiumPresent = ShaderManager.isSodiumPresent();
             
-            // Test shader reload
-            ShaderManager.reloadShaders();
-        } else {
-            context.getSource().sendFeedback(Text.literal("❌ Shader support not available"));
-        }
-        
-        return 1;
-    }
-    
-    private static int testEntities(CommandContext<FabricClientCommandSource> context) {
-        context.getSource().sendFeedback(Text.literal("👾 Testing entity features..."));
-        
-        String entityStatus = EntityModelManager.getEntityFeatureStatus();
-        context.getSource().sendFeedback(Text.literal(entityStatus));
-        
-        if (EntityModelManager.isEMFPresent() || EntityModelManager.isETFPresent()) {
-            context.getSource().sendFeedback(Text.literal("✅ Entity features are active"));
+            context.getSource().sendFeedback(() -> Text.literal("Shader Support: " + (shaderSupport ? "✅" : "❌")), false);
+            context.getSource().sendFeedback(() -> Text.literal("Iris Integration: " + (irisPresent ? "✅" : "❌")), false);
+            context.getSource().sendFeedback(() -> Text.literal("Sodium Compatibility: " + (sodiumPresent ? "✅" : "❌")), false);
             
-            // Test entity reload
-            EntityModelManager.reloadEntityFeatures();
-        } else {
-            context.getSource().sendFeedback(Text.literal("❌ Entity features not available"));
+            if (shaderSupport) {
+                context.getSource().sendFeedback(() -> Text.literal("🎨 Shader system is operational"), false);
+            } else {
+                context.getSource().sendError(Text.literal("❌ Shader system is not available"));
+            }
+        } catch (Exception e) {
+            context.getSource().sendError(Text.literal("❌ Error testing shaders: " + e.getMessage()));
         }
         
         return 1;
     }
     
-    private static int showStatus(CommandContext<FabricClientCommandSource> context) {
-        context.getSource().sendFeedback(Text.literal("=== System Status ==="));
+    private static int testEntities(CommandContext<ServerCommandSource> context) {
+        context.getSource().sendFeedback(() -> Text.literal("Testing entity model features..."), false);
         
-        // Shader compatibility
-        String shaderStatus = ShaderManager.getCompatibilityStatus();
-        context.getSource().sendFeedback(Text.literal(shaderStatus));
-        
-        context.getSource().sendFeedback(Text.literal(""));
-        
-        // Entity features
-        String entityStatus = EntityModelManager.getEntityFeatureStatus();
-        context.getSource().sendFeedback(Text.literal(entityStatus));
+        try {
+            boolean entityFeatures = EntityModelManager.isEntityFeaturesEnabled();
+            boolean freshAnimations = EntityModelManager.isFreshAnimationsEnabled();
+            
+            context.getSource().sendFeedback(() -> Text.literal("Entity Features: " + (entityFeatures ? "✅" : "❌")), false);
+            context.getSource().sendFeedback(() -> Text.literal("Fresh Animations: " + (freshAnimations ? "✅" : "❌")), false);
+            
+            if (entityFeatures) {
+                context.getSource().sendFeedback(() -> Text.literal("🎭 Entity model system is operational"), false);
+            } else {
+                context.getSource().sendError(Text.literal("❌ Entity model system is not available"));
+            }
+        } catch (Exception e) {
+            context.getSource().sendError(Text.literal("❌ Error testing entity features: " + e.getMessage()));
+        }
         
         return 1;
     }

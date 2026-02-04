@@ -15,7 +15,7 @@
 	},
 	"license": "MIT",
 	"icon": "assets/wayacreates-engine/icon.png",
-	"environment": "client",
+	"environment": "*",
 	"entrypoints": {
 		"main": [
 			"com.wayacreates.WayaCreatesEngine"

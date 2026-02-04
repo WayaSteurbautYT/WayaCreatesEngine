@@ -81,6 +81,20 @@ public class EntityModelManager {
     }
     
     /**
+     * Check if entity features are enabled
+     */
+    public static boolean isEntityFeaturesEnabled() {
+        return emfPresent || etfPresent;
+    }
+    
+    /**
+     * Check if Fresh Animations is enabled
+     */
+    public static boolean isFreshAnimationsEnabled() {
+        return freshAnimationsCompatible;
+    }
+    
+    /**
      * Check if Fresh Animations is compatible
      */
     public static boolean isFreshAnimationsCompatible() {

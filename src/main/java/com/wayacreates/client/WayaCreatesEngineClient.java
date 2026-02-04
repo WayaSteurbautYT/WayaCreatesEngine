@@ -1,13 +1,11 @@
 package com.wayacreates.client;
 
 import com.wayacreates.WayaCreatesEngine;
-import com.wayacreates.commands.DebugCommands;
 import com.wayacreates.ui.enhanced.components.ToolbarComponent;
 import com.wayacreates.ui.enhanced.components.EnhancedUIComponent;
 import com.wayacreates.shader.ShaderManager;
 import com.wayacreates.entity.EntityModelManager;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
 /**
@@ -24,9 +22,6 @@ public class WayaCreatesEngineClient implements ClientModInitializer {
     public void onInitializeClient() {
         WayaCreatesEngine.LOGGER.info("Initializing WayaCreates Engine Client...");
         
-        // Register debug commands
-        registerCommands();
-        
         // Register client events
         registerEvents();
         
@@ -38,13 +33,6 @@ public class WayaCreatesEngineClient implements ClientModInitializer {
         
         initialized = true;
         WayaCreatesEngine.LOGGER.info("WayaCreates Engine Client initialized successfully!");
-    }
-    
-    private void registerCommands() {
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            DebugCommands.registerCommands(dispatcher);
-            WayaCreatesEngine.LOGGER.info("Debug commands registered");
-        });
     }
     
     private void registerEvents() {
