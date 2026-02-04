@@ -129,6 +129,7 @@ public class WayaCreatesEngine implements ModInitializer {
         renderEngine.initialize();
         animationEngine = new AnimationEngine();
         audioEngine = new AudioEngine();
+        audioEngine.initialize();
         
         LOGGER.info("✅ Core engines initialized");
     }

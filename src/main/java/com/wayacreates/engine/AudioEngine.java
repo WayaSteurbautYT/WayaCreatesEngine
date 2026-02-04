@@ -86,7 +86,7 @@ public class AudioEngine {
      */
     public void startRecording(UUID playerId) {
         AudioSession session = activeSessions.get(playerId);
-        if (session != null) {
+        if (session != null && audioRecorder != null) {
             session.setRecording(true);
             audioRecorder.startRecording(session);
             LOGGER.info("🎤 Started audio recording for session: {}", session.getSessionId());
@@ -98,7 +98,7 @@ public class AudioEngine {
      */
     public void stopRecording(UUID playerId) {
         AudioSession session = activeSessions.get(playerId);
-        if (session != null) {
+        if (session != null && audioRecorder != null) {
             session.setRecording(false);
             audioRecorder.stopRecording(session);
             LOGGER.info("⏹️ Stopped audio recording for session: {}", session.getSessionId());
@@ -110,7 +110,7 @@ public class AudioEngine {
      */
     public void addTrack(UUID playerId, String trackName, String filePath) {
         AudioSession session = activeSessions.get(playerId);
-        if (session != null) {
+        if (session != null && audioMixer != null) {
             AudioTrack track = new AudioTrack(trackName, filePath);
             session.addTrack(track);
             audioMixer.addTrack(session, track);
@@ -123,7 +123,7 @@ public class AudioEngine {
      */
     public void removeTrack(UUID playerId, String trackName) {
         AudioSession session = activeSessions.get(playerId);
-        if (session != null) {
+        if (session != null && audioMixer != null) {
             session.removeTrack(trackName);
             audioMixer.removeTrack(session, trackName);
             LOGGER.info("🗑️ Removed audio track: {} from session: {}", trackName, session.getSessionId());
@@ -135,7 +135,7 @@ public class AudioEngine {
      */
     public void addEffect(UUID playerId, String trackName, String effectType, Map<String, Object> parameters) {
         AudioSession session = activeSessions.get(playerId);
-        if (session != null) {
+        if (session != null && effectProcessor != null) {
             AudioEffect effect = new AudioEffect(effectType, parameters);
             session.addEffect(trackName, effect);
             effectProcessor.addEffect(session, trackName, effect);
@@ -148,7 +148,7 @@ public class AudioEngine {
      */
     public void playSoundEffect(UUID playerId, String soundName) {
         AudioSession session = activeSessions.get(playerId);
-        if (session != null) {
+        if (session != null && audioMixer != null) {
             audioMixer.playSoundEffect(soundName, session);
             LOGGER.info("🔊 Played sound effect: {} for session: {}", soundName, session.getSessionId());
         }
@@ -159,7 +159,7 @@ public class AudioEngine {
      */
     public void setVolume(UUID playerId, String trackName, float volume) {
         AudioSession session = activeSessions.get(playerId);
-        if (session != null) {
+        if (session != null && audioMixer != null) {
             session.setTrackVolume(trackName, volume);
             audioMixer.setTrackVolume(session, trackName, volume);
             LOGGER.info("🔊 Set volume: {} = {} for session: {}", trackName, volume, session.getSessionId());
@@ -171,7 +171,7 @@ public class AudioEngine {
      */
     public void setPan(UUID playerId, String trackName, float pan) {
         AudioSession session = activeSessions.get(playerId);
-        if (session != null) {
+        if (session != null && audioMixer != null) {
             session.setTrackPan(trackName, pan);
             audioMixer.setTrackPan(session, trackName, pan);
             LOGGER.info("🎧 Set pan: {} = {} for session: {}", trackName, pan, session.getSessionId());
@@ -183,7 +183,7 @@ public class AudioEngine {
      */
     public void exportAudio(UUID playerId, String outputPath, AudioExportFormat format) {
         AudioSession session = activeSessions.get(playerId);
-        if (session != null) {
+        if (session != null && audioMixer != null) {
             audioMixer.exportAudio(session, outputPath, format);
             LOGGER.info("📤 Exported audio to: {} in format: {} for session: {}", outputPath, format, session.getSessionId());
         }
@@ -212,10 +212,16 @@ public class AudioEngine {
         // Update active sessions
         activeSessions.values().forEach(AudioSession::tick);
         
-        // Update components
-        audioMixer.tick();
-        effectProcessor.tick();
-        audioRecorder.tick();
+        // Update components with null checks
+        if (audioMixer != null) {
+            audioMixer.tick();
+        }
+        if (effectProcessor != null) {
+            effectProcessor.tick();
+        }
+        if (audioRecorder != null) {
+            audioRecorder.tick();
+        }
     }
     
     // Audio Settings Class
