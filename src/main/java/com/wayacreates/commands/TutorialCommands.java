@@ -27,9 +27,12 @@ public class TutorialCommands {
         }
         
         TutorialSystem tutorialSystem = WayaCreatesEngine.getTutorialSystem();
-        tutorialSystem.startTutorial(player.getUuid());
-        
-        source.sendFeedback(() -> Text.literal("§a📚 Tutorial started! Follow the on-screen instructions."), true);
+        if (tutorialSystem != null) {
+            tutorialSystem.startTutorial(player.getUuid());
+            source.sendFeedback(() -> Text.literal("§a📚 Tutorial started! Follow the on-screen instructions."), true);
+        } else {
+            source.sendFeedback(() -> Text.literal("§cTutorial system is not available"), false);
+        }
         return 1;
     }
     
@@ -43,9 +46,12 @@ public class TutorialCommands {
         }
         
         TutorialSystem tutorialSystem = WayaCreatesEngine.getTutorialSystem();
-        tutorialSystem.skipTutorial(player.getUuid());
-        
-        source.sendFeedback(() -> Text.literal("§7⏭️ Tutorial skipped"), true);
+        if (tutorialSystem != null) {
+            tutorialSystem.skipTutorial(player.getUuid());
+            source.sendFeedback(() -> Text.literal("§7⏭️ Tutorial skipped"), true);
+        } else {
+            source.sendFeedback(() -> Text.literal("§cTutorial system is not available"), false);
+        }
         return 1;
     }
     
@@ -59,9 +65,12 @@ public class TutorialCommands {
         }
         
         TutorialSystem tutorialSystem = WayaCreatesEngine.getTutorialSystem();
-        tutorialSystem.nextStep(player.getUuid());
-        
-        source.sendFeedback(() -> Text.literal("§7➡️ Next tutorial step"), true);
+        if (tutorialSystem != null) {
+            tutorialSystem.nextStep(player.getUuid());
+            source.sendFeedback(() -> Text.literal("§7➡️ Next tutorial step"), true);
+        } else {
+            source.sendFeedback(() -> Text.literal("§cTutorial system is not available"), false);
+        }
         return 1;
     }
     
@@ -75,9 +84,12 @@ public class TutorialCommands {
         }
         
         TutorialSystem tutorialSystem = WayaCreatesEngine.getTutorialSystem();
-        tutorialSystem.previousStep(player.getUuid());
-        
-        source.sendFeedback(() -> Text.literal("§7⬅️ Previous tutorial step"), true);
+        if (tutorialSystem != null) {
+            tutorialSystem.previousStep(player.getUuid());
+            source.sendFeedback(() -> Text.literal("§7⬅️ Previous tutorial step"), true);
+        } else {
+            source.sendFeedback(() -> Text.literal("§cTutorial system is not available"), false);
+        }
         return 1;
     }
 }

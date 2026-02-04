@@ -60,8 +60,10 @@ public class RecordingManager {
         activeSessions.put(playerId, session);
         LOGGER.info("🎥 Started recording session: {} for player: {}", sessionId, playerId);
         
-        // Start session recording
-        sessionRecorder.startSession(session);
+        // Start session recording if recorder exists
+        if (sessionRecorder != null) {
+            sessionRecorder.startSession(session);
+        }
         
         return session;
     }
@@ -73,7 +75,9 @@ public class RecordingManager {
         RecordingSession session = activeSessions.remove(playerId);
         if (session != null) {
             session.stop();
-            sessionRecorder.stopSession(session);
+            if (sessionRecorder != null) {
+                sessionRecorder.stopSession(session);
+            }
             LOGGER.info("⏹️ Stopped recording session: {}", session.getSessionId());
             return true;
         }
@@ -87,7 +91,9 @@ public class RecordingManager {
         RecordingSession session = activeSessions.get(playerId);
         if (session != null) {
             session.setModOverlayEnabled(modName, enabled);
-            modIntegrationManager.setModOverlayEnabled(session, modName, enabled);
+            if (modIntegrationManager != null) {
+                modIntegrationManager.setModOverlayEnabled(session, modName, enabled);
+            }
             LOGGER.info("🖼️ {} mod overlay: {} for session: {}", enabled ? "Enabled" : "Disabled", modName, session.getSessionId());
         }
     }
@@ -99,7 +105,9 @@ public class RecordingManager {
         RecordingSession session = activeSessions.get(playerId);
         if (session != null) {
             session.setPlayerTagsEnabled(enabled);
-            playerTracker.setPlayerTagsEnabled(session, enabled);
+            if (playerTracker != null) {
+                playerTracker.setPlayerTagsEnabled(session, enabled);
+            }
             LOGGER.info("🏷️ {} player tags for session: {}", enabled ? "Enabled" : "Disabled", session.getSessionId());
         }
     }
@@ -111,7 +119,9 @@ public class RecordingManager {
         RecordingSession session = activeSessions.get(playerId);
         if (session != null) {
             session.setParticlesEnabled(enabled);
-            playerTracker.setParticlesEnabled(session, enabled);
+            if (playerTracker != null) {
+                playerTracker.setParticlesEnabled(session, enabled);
+            }
             LOGGER.info("✨ {} particles for session: {}", enabled ? "Enabled" : "Disabled", session.getSessionId());
         }
     }
@@ -123,7 +133,9 @@ public class RecordingManager {
         RecordingSession session = activeSessions.get(playerId);
         if (session != null) {
             session.setVoiceChatEnabled(enabled);
-            modIntegrationManager.setVoiceChatEnabled(session, enabled);
+            if (modIntegrationManager != null) {
+                modIntegrationManager.setVoiceChatEnabled(session, enabled);
+            }
             LOGGER.info("🎤 {} voice chat for session: {}", enabled ? "Enabled" : "Disabled", session.getSessionId());
         }
     }
@@ -135,7 +147,9 @@ public class RecordingManager {
         RecordingSession session = activeSessions.get(playerId);
         if (session != null) {
             session.setMotionCaptureEnabled(enabled);
-            modIntegrationManager.setMotionCaptureEnabled(session, enabled);
+            if (modIntegrationManager != null) {
+                modIntegrationManager.setMotionCaptureEnabled(session, enabled);
+            }
             LOGGER.info("🎭 {} motion capture for session: {}", enabled ? "Enabled" : "Disabled", session.getSessionId());
         }
     }
@@ -147,7 +161,9 @@ public class RecordingManager {
         RecordingSession session = activeSessions.get(playerId);
         if (session != null) {
             session.setBaritoneEnabled(enabled);
-            modIntegrationManager.setBaritoneEnabled(session, enabled);
+            if (modIntegrationManager != null) {
+                modIntegrationManager.setBaritoneEnabled(session, enabled);
+            }
             LOGGER.info("🤖 {} Baritone for session: {}", enabled ? "Enabled" : "Disabled", session.getSessionId());
         }
     }
@@ -198,30 +214,44 @@ public class RecordingManager {
         // Update active sessions
         activeSessions.values().forEach(RecordingSession::tick);
         
-        // Update components
-        playerTracker.tick();
-        modIntegrationManager.tick();
-        sessionRecorder.tick();
+        // Update components if they exist
+        if (playerTracker != null) {
+            playerTracker.tick();
+        }
+        if (modIntegrationManager != null) {
+            modIntegrationManager.tick();
+        }
+        if (sessionRecorder != null) {
+            sessionRecorder.tick();
+        }
     }
     
     public void onWorldLoad(ServerWorld world) {
         LOGGER.info("🌍 Recording Manager ready for world: {}", world.getRegistryKey().getValue());
         
-        // Initialize player tracking for new world
-        playerTracker.onWorldLoad(world);
+        // Initialize player tracking for new world if tracker exists
+        if (playerTracker != null) {
+            playerTracker.onWorldLoad(world);
+        }
         
-        // Initialize mod integrations for new world
-        modIntegrationManager.onWorldLoad(world);
+        // Initialize mod integrations for new world if manager exists
+        if (modIntegrationManager != null) {
+            modIntegrationManager.onWorldLoad(world);
+        }
     }
     
     public void onWorldUnload(ServerWorld world) {
         LOGGER.info("🌍 Recording Manager unloaded for world: {}", world.getRegistryKey().getValue());
         
-        // Cleanup player tracking
-        playerTracker.onWorldUnload(world);
+        // Cleanup player tracking if tracker exists
+        if (playerTracker != null) {
+            playerTracker.onWorldUnload(world);
+        }
         
-        // Cleanup mod integrations
-        modIntegrationManager.onWorldUnload(world);
+        // Cleanup mod integrations if manager exists
+        if (modIntegrationManager != null) {
+            modIntegrationManager.onWorldUnload(world);
+        }
     }
     
     // Recording Settings Class

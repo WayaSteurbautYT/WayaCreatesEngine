@@ -48,11 +48,13 @@ public class VideoCommands {
         }
         
         VideoEngine videoEngine = WayaCreatesEngine.getVideoEngine();
-        VideoEngine.VideoSettings settings = new VideoEngine.VideoSettings();
-        
-        VideoEngine.VideoSession session = videoEngine.startRecording(player.getUuid(), settings);
-        
-        source.sendFeedback(() -> Text.translatable("wayacreates.video.recording_started", session.getSessionId()), true);
+        if (videoEngine != null) {
+            VideoEngine.VideoSettings settings = new VideoEngine.VideoSettings();
+            VideoEngine.VideoSession session = videoEngine.startRecording(player.getUuid(), settings);
+            source.sendFeedback(() -> Text.translatable("wayacreates.video.recording_started", session.getSessionId()), true);
+        } else {
+            source.sendFeedback(() -> Text.literal("§cVideo engine is not available"), false);
+        }
         return 1;
     }
     
@@ -66,15 +68,18 @@ public class VideoCommands {
         }
         
         VideoEngine videoEngine = WayaCreatesEngine.getVideoEngine();
-        boolean stopped = videoEngine.stopRecording(player.getUuid());
-        
-        if (stopped) {
-            source.sendFeedback(() -> Text.translatable("wayacreates.video.recording_stopped"), true);
+        if (videoEngine != null) {
+            boolean stopped = videoEngine.stopRecording(player.getUuid());
+            if (stopped) {
+                source.sendFeedback(() -> Text.translatable("wayacreates.video.recording_stopped"), true);
+            } else {
+                source.sendFeedback(() -> Text.translatable("wayacreates.video.no_active_recording"), false);
+            }
+            return stopped ? 1 : 0;
         } else {
-            source.sendFeedback(() -> Text.translatable("wayacreates.video.no_active_recording"), false);
+            source.sendFeedback(() -> Text.literal("§cVideo engine is not available"), false);
+            return 0;
         }
-        
-        return stopped ? 1 : 0;
     }
     
     /**
@@ -87,9 +92,12 @@ public class VideoCommands {
         }
         
         VideoEngine videoEngine = WayaCreatesEngine.getVideoEngine();
-        VideoEngine.VideoProject project = videoEngine.createProject(name, player.getUuid());
-        
-        source.sendFeedback(() -> Text.translatable("wayacreates.video.project_created", project.getName()), true);
+        if (videoEngine != null) {
+            VideoEngine.VideoProject project = videoEngine.createProject(name, player.getUuid());
+            source.sendFeedback(() -> Text.translatable("wayacreates.video.project_created", project.getName()), true);
+        } else {
+            source.sendFeedback(() -> Text.literal("§cVideo engine is not available"), false);
+        }
         return 1;
     }
 }
