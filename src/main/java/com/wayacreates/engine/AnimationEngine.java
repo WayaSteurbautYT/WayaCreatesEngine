@@ -1,12 +1,13 @@
 package com.wayacreates.engine;
 
-import net.minecraft.server.world.ServerWorld;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.Map;
-import java.util.UUID;
+import net.minecraft.server.world.ServerWorld;
 
 /**
  * Animation Engine with Fresh Animations Integration
@@ -102,11 +103,15 @@ public class AnimationEngine {
         if (session != null) {
             LOGGER.info("🎭 Animating character: {} with animation: {}", characterType, animationName);
             
-            // Apply Fresh Animations model
-            freshAnimations.applyCharacterModel(characterType, animationName);
+            // Apply Fresh Animations model if integration exists
+            if (freshAnimations != null) {
+                freshAnimations.applyCharacterModel(characterType, animationName);
+            }
             
-            // Apply character rig
-            characterRigSystem.applyRig(characterType, animationName);
+            // Apply character rig if system exists
+            if (characterRigSystem != null) {
+                characterRigSystem.applyRig(characterType, animationName);
+            }
             
             // Apply face rig if available
             if (DEBUG_MODE) {
@@ -115,8 +120,10 @@ public class AnimationEngine {
             // TODO: Implement applyFaceRig method
             // faceRigSystem.applyFaceRig(characterType, animationName);
             
-            // Add to timeline
-            keyframeTimeline.addCharacterAnimation(session, characterType, animationName, session.getCurrentTime());
+            // Add to timeline if timeline exists
+            if (keyframeTimeline != null) {
+                keyframeTimeline.addCharacterAnimation(session, characterType, animationName, session.getCurrentTime());
+            }
         }
     }
     
@@ -212,14 +219,20 @@ public class AnimationEngine {
         if (session != null) {
             LOGGER.info("🎭 Applying Fresh Animations to mob: {} as character: {}", mobType, characterType);
             
-            // Apply Fresh Animations model to mob
-            freshAnimations.applyToMob(mobType, characterType);
+            // Apply Fresh Animations model to mob if integration exists
+            if (freshAnimations != null) {
+                freshAnimations.applyToMob(mobType, characterType);
+            }
             
-            // Apply character rig to mob
-            characterRigSystem.applyToMob(mobType, characterType);
+            // Apply character rig to mob if system exists
+            if (characterRigSystem != null) {
+                characterRigSystem.applyToMob(mobType, characterType);
+            }
             
-            // Apply face rig to mob
-            faceRigSystem.applyToMob(mobType, characterType);
+            // Apply face rig to mob if system exists
+            if (faceRigSystem != null) {
+                faceRigSystem.applyToMob(mobType, characterType);
+            }
         }
     }
     
@@ -243,31 +256,47 @@ public class AnimationEngine {
         // Update active sessions
         activeSessions.values().forEach(AnimationSession::tick);
         
-        // Update components
-        freshAnimations.tick();
-        characterRigSystem.tick();
-        faceRigSystem.tick();
-        keyframeTimeline.tick();
+        // Update components if they exist
+        if (freshAnimations != null) {
+            freshAnimations.tick();
+        }
+        if (characterRigSystem != null) {
+            characterRigSystem.tick();
+        }
+        if (faceRigSystem != null) {
+            faceRigSystem.tick();
+        }
+        if (keyframeTimeline != null) {
+            keyframeTimeline.tick();
+        }
     }
     
     public void onWorldLoad(ServerWorld world) {
         LOGGER.info("🌍 Animation Engine ready for world: {}", world.getRegistryKey().getValue());
         
-        // Initialize Fresh Animations for new world
-        freshAnimations.onWorldLoad(world);
+        // Initialize Fresh Animations for new world if integration exists
+        if (freshAnimations != null) {
+            freshAnimations.onWorldLoad(world);
+        }
         
-        // Load world-specific character rigs
-        characterRigSystem.onWorldLoad(world);
+        // Load world-specific character rigs if system exists
+        if (characterRigSystem != null) {
+            characterRigSystem.onWorldLoad(world);
+        }
     }
     
     public void onWorldUnload(ServerWorld world) {
         LOGGER.info("🌍 Animation Engine unloaded for world: {}", world.getRegistryKey().getValue());
         
-        // Cleanup Fresh Animations
-        freshAnimations.onWorldUnload(world);
+        // Cleanup Fresh Animations if integration exists
+        if (freshAnimations != null) {
+            freshAnimations.onWorldUnload(world);
+        }
         
-        // Cleanup character rigs
-        characterRigSystem.onWorldUnload(world);
+        // Cleanup character rigs if system exists
+        if (characterRigSystem != null) {
+            characterRigSystem.onWorldUnload(world);
+        }
     }
     
     // Animation Settings Class
